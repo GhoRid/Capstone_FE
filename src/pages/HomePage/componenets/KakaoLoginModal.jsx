@@ -2,6 +2,7 @@ import React from "react";
 import BaseModal from "../../../components/BaseModal";
 import styled from "styled-components";
 import kakaoImage from "../../../assets/icon/kakaoImage.png";
+import { KAKAO_AUTH_URL } from "../../../shared/KakaoAuth";
 
 const KakaoLoginButton = styled.button`
   background-color: #fee500; // 카카오 노란색
@@ -36,10 +37,14 @@ const KakaoLoginButtonText = styled.span`
 `;
 
 const KakaoLoginModal = ({ isOpen, onRequestClose }) => {
+  const handleLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   return (
     <BaseModal isOpen={isOpen} onRequestClose={onRequestClose}>
       <Text>로그인이 필요한 서비스 입니다.</Text>
-      <KakaoLoginButton>
+      <KakaoLoginButton onClick={handleLogin}>
         <KakaoLoginButtonImage src={kakaoImage} alt="Kakao logo" />
         <KakaoLoginButtonText>카카오톡으로 시작하기</KakaoLoginButtonText>
       </KakaoLoginButton>

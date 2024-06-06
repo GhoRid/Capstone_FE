@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Card from "./Card";
 import { bottomSheetOpenState } from "../../../recoil/bottomSheetOpenState/atom";
 import { useRecoilState } from "recoil";
+import { useRef } from "react";
+import Loader from "./Loader";
+import KakaoLoginModal from "./KakaoLoginModal";
 
 const Container = styled(motion.div)`
   width: 100%;
@@ -16,10 +19,10 @@ const Container = styled(motion.div)`
 
 const HeaderBox = styled.div`
   width: 100%;
-  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* border-bottom: 1px solid ${({ theme }) => theme.gray}; */
 `;
 
 const HandleBar = styled.div`
@@ -42,13 +45,26 @@ const TitleText = styled.span`
 `;
 
 const ContentsBox = styled.div`
+  margin: 12px 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  scroll-behavior: smooth;
 `;
 
-const SurroundingLightInfo = ({ surroundingLightInfoData }) => {
+const ScrollBox = styled.div`
+  overflow-y: scroll;
+  height: ${({ $openState }) =>
+    $openState === "mid" ? "calc(50dvh - 136px)" : "100%"};
+`;
+
+const SurroundingLightInfo = ({
+  isLoading,
+  surroundingLightInfoData,
+  isLoggein,
+}) => {
   const [openState, setOpenState] = useRecoilState(bottomSheetOpenState);
+  const observerRef = useRef(null);
 
   const dragControls = useDragControls();
 
@@ -81,36 +97,68 @@ const SurroundingLightInfo = ({ surroundingLightInfoData }) => {
         const isGoDown = info.offset.y > 0;
 
         if (isGoDown && openState.surroundingLightInfoOpenState === "top") {
-          setOpenState({ surroundingLightInfoOpenState: "mid" });
+          setOpenState((prev) => ({
+            ...prev,
+            surroundingLightInfoOpenState: "mid",
+          }));
         } else if (
           isGoDown &&
           openState.surroundingLightInfoOpenState === "mid"
         ) {
-          setOpenState({ surroundingLightInfoOpenState: "closed" });
+          setOpenState((prev) => ({
+            ...prev,
+            surroundingLightInfoOpenState: "closed",
+          }));
         } else if (
           !isGoDown &&
           openState.surroundingLightInfoOpenState === "mid"
         ) {
-          setOpenState({ surroundingLightInfoOpenState: "top" });
+          setOpenState((prev) => ({
+            ...prev,
+            surroundingLightInfoOpenState: "top",
+          }));
         } else if (
           !isGoDown &&
           openState.surroundingLightInfoOpenState === "closed"
         ) {
-          setOpenState({ surroundingLightInfoOpenState: "mid" });
+          setOpenState((prev) => ({
+            ...prev,
+            surroundingLightInfoOpenState: "mid",
+          }));
         }
       }}
     >
-      <HeaderBox onPointerDown={(e) => dragControls.start(e)}>
-        <HandleBar />
-        <TopBox>
-          <TitleText>주변 신호등</TitleText>
-        </TopBox>
-      </HeaderBox>
-      <ContentsBox>
-        {surroundingLightInfoData.map((data, index) => {
-          return <Card key={index} surroundingLightInfoData={data} />;
-        })}
-      </ContentsBox>
+      {isLoading ? (
+        <>
+          <Loader />
+        </>
+      ) : (
+        <>
+          <HeaderBox onPointerDown={(e) => dragControls.start(e)}>
+            <HandleBar />
+            <TopBox>
+              <TitleText>주변 신호등</TitleText>
+            </TopBox>
+          </HeaderBox>
+          <ScrollBox
+            $openState={openState.surroundingLightInfoOpenState}
+            ref={observerRef}
+          >
+            <ContentsBox>
+              {surroundingLightInfoData?.map((data, index) => {
+                return (
+                  <Card
+                    key={index}
+                    surroundingLightInfoData={data}
+                    isLoggein={isLoggein}
+                  />
+                );
+              })}
+            </ContentsBox>
+          </ScrollBox>
+        </>
+      )}
+      <KakaoLoginModal />
     </Container>
   );
 };
