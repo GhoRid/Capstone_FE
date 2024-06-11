@@ -17,6 +17,7 @@ export const fetchFavoriteTraffic = () => {
 };
 
 export const addFavoriteTraffic = (payload) => {
+  console.log(payload);
   return trafficInstance.post("/favorite", payload);
 };
 
