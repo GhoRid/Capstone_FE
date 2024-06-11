@@ -11,7 +11,7 @@ export const useHandleFavoriteTraffic = ({
     mutationFn: ({ id, viewName }) =>
       isFavorite
         ? deleteFavoriteTraffic(id)
-        : addFavoriteTraffic({ id, viewName }),
+        : addFavoriteTraffic({ trafficId: id, trafficAlias: viewName }),
     onSuccess: (res) => {
       console.log("즐겨찾기", res);
     },
