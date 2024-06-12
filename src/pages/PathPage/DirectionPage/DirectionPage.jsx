@@ -11,27 +11,16 @@ import DirectionInfo from "./DirectionInfo";
 import TrafficDirection from "./TrafficDirection";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPathDetail } from "../../../apis/api/paths";
+import { useRecoilState } from "recoil";
+import { addressState } from "../../../recoil/addressState/atom";
 
 const { kakao } = window;
 
-const Container = styled.div`
-  max-width: 390px;
-  width: 100vh;
-  //height: calc(100vh - 80px);
-  height: 100vh;
-  height: 100dvh; /* Mobile */
-  position: relative;
-
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-`;
+const Container = styled.div``;
 
 const PanToButton = styled.button`
   position: absolute;
-  //bottom: 290px;
+
   right: 10px;
   border: none;
   border-radius: 50%;
@@ -58,15 +47,12 @@ const DirectionPage = () => {
     errMsg: null,
     isLoading: true,
   });
-  const [result, setResult] = useState("");
-  const [address, setAddress] = useState("");
-  const [showDirectionInfo, setShowDirectionInfo] = useState(true);
+  const [address, setAddress] = useRecoilState(addressState);
   const [showTrafficDirection, setShowTrafficDirection] = useState(false);
   const [panToBottom, setPanToBottom] = useState(290);
   const { startLat, startLng, endLat, endLng } = address;
 
   const handleNavStartClick = () => {
-    setShowDirectionInfo(false);
     setShowTrafficDirection(true);
     setPanToBottom(120);
   };
@@ -78,44 +64,35 @@ const DirectionPage = () => {
 
   const {
     isLoading,
-    data: pathDetailData, // 수정
-    refetch: pathDetailRefetch, // 수정
+    data: pathDetailData,
+    refetch: pathDetailRefetch,
   } = useQuery({
     queryKey: ["pathDetail", startLat, startLng, endLat, endLng],
     queryFn: () => fetchPathDetail({ startLat, startLng, endLat, endLng }),
-    enabled: !!address, // 수정
-    // keepPreviousData: true,
-    // staleTime: 5000,
+    enabled: !!address,
     onError: (e) => {
       console.log(e);
     },
   });
 
-  // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-  // 여기에 서버에서 받아온 좌표들을 차례대로 저장
-  //console.log(pathDetailData?.data.data.paths);
-  var linePath = pathDetailData?.data.data.paths.map((path) => {
+  const pathResponse = pathDetailData?.data.data;
+  console.log(pathResponse);
+
+  const trafficLightsDT = pathDetailData?.data.data.traffics.map((traffic) => ({
+    id: traffic.viewName,
+    redCycle: traffic.redCycle,
+    greenCycle: traffic.greenCycle,
+    color: traffic.color,
+    timeLeft: traffic.timeLeft,
+    direction: traffic.detail.direction,
+    // 여기에 서버에서 받아온 값 중 필요한 값 추가
+  }));
+
+  const linePath = pathDetailData?.data.data.paths.map((path) => {
     return new kakao.maps.LatLng(path.lat, path.lng);
   });
-  //console.log("lng: " + linePath[0].La);
-  //console.log("lat: " + linePath[0].Ma);
 
-  // 위도와 경도를 추출합니다
-  var lats = linePath.map((point) => point.getLat());
-  var lngs = linePath.map((point) => point.getLng());
-
-  // 위도와 경도의 최소값과 최대값을 찾습니다
-  var minLat = Math.min(...lats);
-  var maxLat = Math.max(...lats);
-  var minLng = Math.min(...lngs);
-  var maxLng = Math.max(...lngs);
-
-  // 위도와 경도의 최소값과 최대값의 평균을 계산합니다
-  var avgLat = (minLat + maxLat) / 2;
-  var avgLng = (minLng + maxLng) / 2;
-
-  // 지도에 표시할 선을 생성합니다
-  var polyline = new kakao.maps.Polyline({
+  const polyline = new kakao.maps.Polyline({
     path: linePath, // 선을 구성하는 좌표배열 입니다
     strokeWeight: 5, // 선의 두께 입니다
     strokeColor: "#535CE8", // 선의 색깔입니다
@@ -123,50 +100,7 @@ const DirectionPage = () => {
     strokeStyle: "solid", // 선의 스타일입니다
   });
 
-  // 지도에 선을 표시합니다
   polyline.setMap(map);
-
-  // 커스텀 오버레이에 표시할 내용입니다
-  // HTML 문자열 또는 Dom Element 입니다
-  var startingImg =
-    '<div class ="label">' +
-    `<span class="center"><img src="${startingPoint}" alt="Location Icon" style="width:40px; height:50px; margin-bottom:30px;"/></span>` + // locationIcon 이미지를 추가합니다
-    "</div>";
-  var endingImg =
-    '<div class ="label">' +
-    `<span class="center"><img src="${endingPoint}" alt="Location Icon" style="width:40px; height:50px; margin-bottom:30px;"/></span>` + // locationIcon 이미지를 추가합니다
-    "</div>";
-
-  // 커스텀 오버레이가 표시될 위치입니다(출발지)
-  var startPosition = new kakao.maps.LatLng(
-    pathDetailData?.data.data.paths[0].lat,
-    pathDetailData?.data.data.paths[0].lng
-  );
-  // 커스텀 오버레이가 표시될 위치입니다(도착지)
-  var endPosition = new kakao.maps.LatLng(
-    pathDetailData?.data.data.paths[
-      pathDetailData?.data.data.paths.length - 1
-    ].lat,
-    pathDetailData?.data.data.paths[
-      pathDetailData?.data.data.paths.length - 1
-    ].lng
-  );
-
-  // 커스텀 오버레이를 생성합니다(출발지)
-  var startingPointOverlay = new kakao.maps.CustomOverlay({
-    position: startPosition,
-    content: startingImg,
-  });
-
-  // 커스텀 오버레이를 생성합니다(도착지)
-  var endingPointOverlay = new kakao.maps.CustomOverlay({
-    position: endPosition,
-    content: endingImg,
-  });
-
-  // 커스텀 오버레이를 지도에 표시합니다
-  startingPointOverlay.setMap(map);
-  endingPointOverlay.setMap(map);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -175,10 +109,8 @@ const DirectionPage = () => {
           setState((prev) => ({
             ...prev,
             center: {
-              //lat: position.coords.latitude,
-              //lng: position.coords.longitude,
-              lat: avgLat - 0.002,
-              lng: avgLng,
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
             },
             isLoading: false,
           }));
@@ -200,26 +132,6 @@ const DirectionPage = () => {
     }
   }, []);
 
-  /*
-  useEffect(() => {
-  // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-  var bounds = new kakao.maps.LatLngBounds();
-
-  var i;
-  for (i = 0; i < linePath.length; i++) {
-    // LatLngBounds 객체에 좌표를 추가합니다
-    bounds.extend(linePath[i]);
-  }
-  function setBounds() {
-    // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
-    // 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
-    map.setBounds(bounds);
-  }
-  }, []);
-*/
-  //const location = useLocation();
-  //const isDirectionSearchClicked = location.state?.isDirectionSearchClicked;
-  //console.log(isDirectionSearchClicked);
   return (
     <NavigationBarLayout>
       <Container>
@@ -235,34 +147,28 @@ const DirectionPage = () => {
           level={4}
           minLevel={6}
           onCreate={setMap}
-          onDragEnd={(map) => {
-            //setBounds();
-            //const latlng = map.getCenter();
-            // var coord = new kakao.maps.LatLng(
-            //   map.getCenter().getLat(),
-            //   map.getCenter().getLng()
-            // );
-            //geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
-            //setResult(
-            //</Container>  `변경된 지도 중심좌표는 ${latlng.getLat()} 이고, 경도는 ${latlng.getLng()} 입니다`
-            //);
-            //console.log(result);
-            //console.log(avgLat, avgLng);
-          }}
+          onDragEnd={(map) => {}}
         >
-          {/* <MapMarker
-            position={state.center}
-            image={{ src: locationIcon, size: { width: 30, height: 30 } }}
-          /> */}
+          {pathResponse && (
+            <>
+              <MapMarker
+                position={pathResponse.startPoint}
+                image={{ src: startingPoint, size: { width: 45, height: 60 } }}
+                key="startPoint"
+              />
+              <MapMarker
+                position={pathResponse.endPoint}
+                image={{ src: endingPoint, size: { width: 45, height: 60 } }}
+                key="endPoint"
+              ></MapMarker>
+            </>
+          )}
         </Map>
         <PanToButton
           style={{ bottom: `${panToBottom}px` }}
           onClick={() => {
             panTo();
-            // console.log(map.getBounds());
           }}
-          //$openState={openState}
-          //$navigationBarState={navigationBarState}
         >
           <svg
             width="20"
@@ -292,10 +198,14 @@ const DirectionPage = () => {
           </svg>
         </PanToButton>
       </Container>
-      {showDirectionInfo && (
-        <DirectionInfo onNavStartClick={handleNavStartClick} />
+
+      <DirectionInfo
+        onNavStartClick={handleNavStartClick}
+        pathResponse={pathResponse}
+      />
+      {showTrafficDirection && (
+        <TrafficDirection trafficLightsDT={trafficLightsDT} />
       )}
-      {showTrafficDirection && <TrafficDirection />}
     </NavigationBarLayout>
   );
 };

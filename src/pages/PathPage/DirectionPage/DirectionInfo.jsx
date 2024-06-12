@@ -1,13 +1,9 @@
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
 import Walking from "../../../assets/icon/Walking.webp";
-import React, { useState, useEffect } from "react";
-import TrafficDirection from "./TrafficDirection.jsx";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { addressState } from "../../../recoil/addressState/atom";
 import { pathInfoState } from "../../../recoil/pathInfoState/atom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchPathDetail } from "../../../apis/api/paths";
 
 const Container = styled.div`
   background-color: white;
@@ -84,42 +80,14 @@ const WalkingIcon = styled.img.attrs({
   margin-right: 10px;
 `;
 
-const DirecrtionInfo = ({ onNavStartClick }) => {
+const DirecrtionInfo = ({ onNavStartClick, pathResponse }) => {
   const [address, setAddress] = useRecoilState(addressState);
-  const { startLat, startLng, endLat, endLng } = address;
   const [pathInfo, setPathInfo] = useRecoilState(pathInfoState);
-
-  const {
-    isLoading,
-    data: pathDetailData, // 수정
-    refetch: pathDetailRefetch, // 수정
-  } = useQuery({
-    queryKey: ["pathDetail", startLat, startLng, endLat, endLng],
-    queryFn: () => fetchPathDetail({ startLat, startLng, endLat, endLng }),
-    enabled:
-      !!address &&
-      address.startLat !== null &&
-      address.startLng !== null &&
-      address.endLat !== null &&
-      address.endLng !== null,
-    // keepPreviousData: true,
-    // staleTime: 5000,
-    onError: (e) => {
-      console.log(e);
-    },
-  });
-  console.log("pathDetailData(DirectionInfo): ", pathDetailData);
-
-  // const {}
-
-  console.log(pathDetailData?.data.data.totalTime);
 
   const getSuggestedTime = () => {
     let currentTime = new Date();
 
-    const timeLeftInSeconds = Math.round(
-      pathDetailData?.data.data.timeToFirstTraffic
-    ); // -30 // -(n초)를 하면, 신호가 바뀌기 n초 전에 도착하도록 추천 출발 시간 설정 가능
+    const timeLeftInSeconds = Math.round(pathResponse.timeToFirstTraffic); // -30 // -(n초)를 하면, 신호가 바뀌기 n초 전에 도착하도록 추천 출발 시간 설정 가능
     currentTime = new Date(currentTime.getTime() + timeLeftInSeconds * 1000);
 
     let hours = currentTime.getHours();
@@ -128,21 +96,21 @@ const DirecrtionInfo = ({ onNavStartClick }) => {
     const ampm = hours >= 12 ? "오후" : "오전";
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
-    const sugegestedTime = `${ampm} ${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
+    const sugegestedTime = `${ampm} ${hours}:${
+      minutes < 10 ? "0" : ""
+    }${minutes}`;
     return sugegestedTime;
   };
 
   const suggestedDepartureTime = getSuggestedTime();
-  const timeTakes = Math.ceil(pathDetailData?.data.data.totalTime / 60);
-  const trafficCounts = pathDetailData?.data.data.trafficCount;
-  const totalDistance = pathDetailData?.data.data.totalDistance / 1000; // API에서 총 거리 반영되는대로 코드 수정
+  const timeTakes = Math.ceil(pathResponse.totalTime / 60);
+  const trafficCounts = pathResponse.trafficCount;
+  const totalDistance = pathResponse.totalDistance / 1000;
 
   useEffect(() => {
     setPathInfo(() => ({
-      //...prev,
       suggestedDepartureTime: suggestedDepartureTime,
       timeTakes: timeTakes,
-      //totalDistance: 1.6,
       totalDistance: totalDistance,
       trafficCounts: trafficCounts,
     }));

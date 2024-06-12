@@ -1,7 +1,6 @@
 import { CustomOverlayMap } from "react-kakao-maps-sdk";
 import styled from "styled-components";
 import { ReactComponent as Traffic } from "../../../assets/icon/traffic.svg";
-import Text from "./Text";
 import { useSetRecoilState } from "recoil";
 import { bottomSheetOpenState } from "../../../recoil/bottomSheetOpenState/atom";
 import { navigationState } from "../../../recoil/navigationState/atom";

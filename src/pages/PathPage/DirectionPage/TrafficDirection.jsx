@@ -160,18 +160,20 @@ const Direction = styled.div`
   // align-items: center;
 `;
 
-const TrafficDirection = (props) => {
+const TrafficDirection = (trafficLightsDT) => {
   const dragControls = useDragControls();
   const [openState, setOpenState] = useState("mid");
   const pathInfo = useRecoilValue(pathInfoState);
   const [address, setAddress] = useRecoilState(addressState);
   const { startLat, startLng, endLat, endLng } = address;
-  const [trafficLights, setTrafficLights] = useState(props.trafficLightsDT);
+  const [trafficLights, setTrafficLights] = useState(
+    trafficLightsDT.trafficLightsDT
+  );
 
-  // props.trafficLights가 변경될 때마다 trafficLights 상태를 업데이트
+  // trafficLights가 변경될 때마다 trafficLights 상태를 업데이트
   useEffect(() => {
-    setTrafficLights(props.trafficLightsDT);
-  }, [props.trafficLightsDT]);
+    setTrafficLights(trafficLightsDT.trafficLightsDT);
+  }, [trafficLightsDT.trafficLightsDT]);
   //console.log("TrafficDirection 정보: " + trafficLights);
 
   return (
@@ -235,12 +237,12 @@ const TrafficDirection = (props) => {
                     {trafficLight.direction === "et"
                       ? "동쪽"
                       : trafficLight.direction === "wt"
-                        ? "서쪽"
-                        : trafficLight.direction === "sw"
-                          ? "남쪽"
-                          : trafficLight.direction === "nt"
-                            ? "북쪽"
-                            : trafficLight.direction}{" "}
+                      ? "서쪽"
+                      : trafficLight.direction === "sw"
+                      ? "남쪽"
+                      : trafficLight.direction === "nt"
+                      ? "북쪽"
+                      : trafficLight.direction}{" "}
                   </Direction>
                   <TrafficLightContainer>
                     <TrafficLight
@@ -251,7 +253,6 @@ const TrafficDirection = (props) => {
                       color={trafficLight.color}
                       timeLeft={trafficLight.timeLeft}
                       direction={trafficLight.direction}
-                      // 여기에 추가로 넘겨줄 값 넣기
                     />
                   </TrafficLightContainer>
                 </TrafficLightsItem>

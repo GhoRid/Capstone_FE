@@ -79,7 +79,7 @@ const HomePage = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [currentName, setCurrentName] = useState("");
   const setCurrentAddress = useSetRecoilState(currentAddressState);
-  const [state, setState] = useState({
+  const [locationState, setLocationState] = useState({
     center: {
       lat: 35.17828963,
       lng: 126.909254315,
@@ -87,7 +87,6 @@ const HomePage = () => {
     errMsg: null,
     isLoading: true,
   });
-
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -106,9 +105,9 @@ const HomePage = () => {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
+      navigator.geolocation.getCurrentPosition(
         (position) => {
-          setState((prev) => ({
+          setLocationState((prev) => ({
             ...prev,
             center: {
               lat: position.coords.latitude,
@@ -128,7 +127,7 @@ const HomePage = () => {
           geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
         },
         (err) => {
-          setState((prev) => ({
+          setLocationState((prev) => ({
             ...prev,
             errMsg: err.message,
             isLoading: false,
@@ -136,7 +135,7 @@ const HomePage = () => {
         }
       );
     } else {
-      setState((prev) => ({
+      setLocationState((prev) => ({
         ...prev,
         errMsg: "geolocation을 사용할수 없음",
         isLoading: false,
@@ -156,8 +155,8 @@ const HomePage = () => {
   }, [navigationBarState]);
 
   const panTo = (point) => {
-    const lat = point.lat ? point.lat : state.center.lat;
-    const lng = point.lng ? point.lng : state.center.lng;
+    const lat = point.lat ? point.lat : locationState.center.lat;
+    const lng = point.lng ? point.lng : locationState.center.lng;
     const newLatLng = new kakao.maps.LatLng(lat, lng);
     map.panTo(newLatLng);
   };
@@ -168,9 +167,9 @@ const HomePage = () => {
   };
 
   const handleMapDragEnd = () => {
-    const newBounds = map.getBounds(); // 맵 API로부터 새로운 bounds 정보를 가져옴
+    const newBounds = map.getBounds();
     setMapBounds(newBounds);
-    surroundingDataRefetch(); // 새로운 bounds로 데이터 페칭 실행
+    surroundingDataRefetch();
   };
   const geocoder = new kakao.maps.services.Geocoder();
 
@@ -186,7 +185,7 @@ const HomePage = () => {
         <TopBar currentName={currentName} />
         <Map
           id="map"
-          center={state.center}
+          center={locationState.center}
           style={{
             width: "100%",
             height: "calc(100vh - 80px)",
@@ -195,6 +194,7 @@ const HomePage = () => {
           level={3}
           minLevel={4}
           onCreate={setMap}
+          // onCenterChanged
           onDragEnd={() => {
             handleMapDragEnd();
           }}
@@ -225,7 +225,7 @@ const HomePage = () => {
             <FavoriteInfo panToPoint={panTo} />
           ) : null}
           <MapMarker
-            position={state.center}
+            position={locationState.center}
             image={{ src: locationIcon, size: { width: 30, height: 30 } }}
           />
         </Map>
