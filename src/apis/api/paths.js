@@ -1,10 +1,6 @@
 import { pathInstance } from "..";
 
 export const fetchPathDetail = ({ startLat, startLng, endLat, endLng }) => {
-  console.log("전송하는 startLat: " + startLat);
-  console.log("전송하는 startLng: " + startLng);
-  console.log("전송하는 endLat: " + endLat);
-  console.log("전송하는 endLng: " + endLng);
   return pathInstance.get("/detail", {
     params: {
       startLat: startLat,
