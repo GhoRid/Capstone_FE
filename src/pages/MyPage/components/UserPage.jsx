@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import LocationIcon from "../../../assets/icon/locationIcon.webp";
 import TrafficIcon from "../../../assets/icon/trafficIcon.webp";
 import RouteIcon from "../../../assets/icon/routeIcon.webp";
 import EditUserButton from "../../../assets/icon/editUserButton.webp";
@@ -224,16 +223,6 @@ const UserPage = () => {
       <FavoriteContainer>
         <Title>즐겨찾기</Title>
         <FavoriteButton>
-          {/* <StyledLink to="/mypage/favoriteslocation">
-            <IconBox>
-              <Icon
-                src={LocationIcon}
-                alt="location icon"
-                style={{ width: 22 }}
-              />
-            </IconBox>
-            <Text>장소</Text>
-          </StyledLink> */}
           <StyledLink to="/mypage/favoritestraffic">
             <IconBox>
               <Icon src={TrafficIcon} alt="TrafficIcon" style={{ width: 19 }} />

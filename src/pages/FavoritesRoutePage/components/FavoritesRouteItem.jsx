@@ -10,8 +10,6 @@ import {
 import Icon from "../../../assets/icon/favoriteRouteIcon.webp";
 import UpdateModal from "../../../components/UpdateModal";
 import DeleteModal from "../../../components/DeleteModal";
-import { useRecoilValue } from "recoil";
-import { addressState } from "../../../recoil/addressState/atom";
 
 const { kakao } = window;
 
@@ -150,7 +148,6 @@ const FavoritesRouteItem = ({ path }) => {
     const startLatLng = new kakao.maps.LatLng(lat, lng);
     let callback = function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
-        console.log("startAddress", result[0].address.address_name);
         setStartAddress(result[0].address.address_name);
       } else {
         console.error("Failed to get end address:", status);
@@ -168,7 +165,6 @@ const FavoritesRouteItem = ({ path }) => {
     const endLatLng = new kakao.maps.LatLng(lat, lng);
     let callback = function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
-        console.log("endAddress", result[0].address.address_name);
         setEndAddress(result[0].address.address_name);
       } else {
         console.error("Failed to get end address:", status);
@@ -207,10 +203,8 @@ const FavoritesRouteItem = ({ path }) => {
         drag="x"
         dragConstraints={{ left: -110, right: 0 }}
         dragElastic={0.1}
-        // dragListener={false}
         dragControls={dragControls}
         style={{ x: itemX }}
-        //dragSnapToOrigin   // 드래그 끝나면 원래 위치로
         onDragStart={() => {
           setCurrentDraggedItemId(id); // 현재 드래그 요소 추적
         }}

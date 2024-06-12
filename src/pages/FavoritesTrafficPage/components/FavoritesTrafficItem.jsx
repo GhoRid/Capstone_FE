@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MoveButton from "../../../assets/icon/moveButton.webp";
 import {
-  Reorder,
   motion,
   useAnimate,
   useDragControls,
@@ -65,16 +64,6 @@ const SwipeContainer = styled(motion.div)`
   background-color: #fff;
   padding: 0px 12px;
 `;
-
-// const ListItemInner = styled(Reorder.Item)`
-//   width:100%;
-//   height:100%;
-//   display:flex;
-//   justify-content:space-between;
-//   align-items:center;
-//   gap:12px;
-//   background-color:#fff;
-// `;
 
 const ItemBox = styled.div`
   width: 100%;
@@ -167,7 +156,6 @@ const FavoritesTrafficItem = ({ traffic }) => {
         dragElastic={0.1}
         dragControls={swipeDragControls}
         style={{ x: itemX }}
-        //dragSnapToOrigin   // 드래그 끝나면 원래 위치로
         onDragStart={() => {
           setCurrentDraggedItemId(id); // 현재 드래그 요소 추적
         }}
@@ -180,10 +168,6 @@ const FavoritesTrafficItem = ({ traffic }) => {
         }}
         ref={animateRef}
       >
-        {/* <ListItemInner 
-          id={id} value={traffic}
-          dragControls={reorderDragControls}
-          dragListener={false}> */}
         <ItemBox>
           <IconBox>
             <IconImg src={Icon} alt="icon" />
@@ -195,7 +179,6 @@ const FavoritesTrafficItem = ({ traffic }) => {
         <MoveBox>
           <Move src={MoveButton} alt="move" />
         </MoveBox>
-        {/* </ListItemInner> */}
       </SwipeContainer>
       <UpdateModal
         isOpen={isUpdateModalOpen}
