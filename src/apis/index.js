@@ -12,7 +12,7 @@ export const trafficInstance = axios.create({
 trafficInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers["Authorization"] = "Bearer  " + token;
+    config.headers["Authorization"] = "Bearer " + token;
   }
   return config;
 });
@@ -37,7 +37,7 @@ export const pathInstance = axios.create({
 pathInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers["Authorization"] = token;
+    config.headers["Authorization"] = "Bearer " + token;
   }
   return config;
 });
@@ -63,7 +63,7 @@ export const memberInstance = axios.create({
 memberInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers["Authorization"] = "Bearer  " + token;
+    config.headers["Authorization"] = "Bearer " + token;
   }
   return config;
 });
