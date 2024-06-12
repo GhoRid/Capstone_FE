@@ -6,11 +6,12 @@ export const useHandleFavoriteTraffic = ({
   viewName = "",
   isFavorite,
 }) => {
+  const token = localStorage.getItem("token");
   const { mutate: handleFavoriteMutate } = useMutation({
     mutationFn: ({ id, viewName }) =>
       isFavorite
         ? deleteFavoriteTraffic(id)
-        : addFavoriteTraffic({ id, viewName }),
+        : addFavoriteTraffic({ trafficId: id, trafficAlias: viewName }),
     onSuccess: (res) => {
       console.log("즐겨찾기", res);
     },
@@ -19,10 +20,8 @@ export const useHandleFavoriteTraffic = ({
     },
   });
 
-  const isLoggedIn = !!localStorage.getItem("kakaoLoginToken");
-
   const handleFavorite = () => {
-    if (!isLoggedIn) {
+    if (!token) {
       console.log("로그인이 필요합니다.");
       return;
     }

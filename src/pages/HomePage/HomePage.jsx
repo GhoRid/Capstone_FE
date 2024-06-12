@@ -20,7 +20,7 @@ const { kakao } = window;
 
 const ToSeoulButton = styled.button`
   position: absolute;
-  bottom: 80dvh;
+  top: 8%;
   left: 16px;
   border: none;
   border-radius: 50%;
