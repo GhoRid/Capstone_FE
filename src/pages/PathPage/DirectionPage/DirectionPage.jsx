@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import locationIcon from "../../../assets/icon/location.png";
 import startingPoint from "../../../assets/icon/startingPoint.webp";
 import endingPoint from "../../../assets/icon/endingPoint.webp";
@@ -11,7 +10,7 @@ import DirectionInfo from "./DirectionInfo";
 import TrafficDirection from "./TrafficDirection";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPathDetail } from "../../../apis/api/paths";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { addressState } from "../../../recoil/addressState/atom";
 
 const { kakao } = window;
@@ -47,13 +46,13 @@ const DirectionPage = () => {
     errMsg: null,
     isLoading: true,
   });
-  const [address, setAddress] = useRecoilState(addressState);
-  const [showTrafficDirection, setShowTrafficDirection] = useState(false);
+  const address = useRecoilValue(addressState);
+  const [isGuideStart, setIsGuideStart] = useState(false);
   const [panToBottom, setPanToBottom] = useState(290);
   const { startLat, startLng, endLat, endLng } = address;
 
-  const handleNavStartClick = () => {
-    setShowTrafficDirection(true);
+  const handleGuideStartClick = () => {
+    setIsGuideStart(true);
     setPanToBottom(120);
   };
 
@@ -85,7 +84,6 @@ const DirectionPage = () => {
     color: traffic.color,
     timeLeft: traffic.timeLeft,
     direction: traffic.detail.direction,
-    // 여기에 서버에서 받아온 값 중 필요한 값 추가
   }));
 
   const linePath = pathDetailData?.data.data.paths.map((path) => {
@@ -147,7 +145,6 @@ const DirectionPage = () => {
           level={4}
           minLevel={6}
           onCreate={setMap}
-          onDragEnd={(map) => {}}
         >
           {pathResponse && (
             <>
@@ -198,13 +195,13 @@ const DirectionPage = () => {
           </svg>
         </PanToButton>
       </Container>
-
-      <DirectionInfo
-        onNavStartClick={handleNavStartClick}
-        pathResponse={pathResponse}
-      />
-      {showTrafficDirection && (
+      {isGuideStart ? (
         <TrafficDirection trafficLightsDT={trafficLightsDT} />
+      ) : (
+        <DirectionInfo
+          onNavStartClick={handleGuideStartClick}
+          pathResponse={pathResponse}
+        />
       )}
     </NavigationBarLayout>
   );
