@@ -199,12 +199,13 @@ const DirectionPage = () => {
         </PanToButton>
       </Container>
 
-      <DirectionInfo
-        onNavStartClick={handleNavStartClick}
-        pathResponse={pathResponse}
-      />
-      {showTrafficDirection && (
+      {showTrafficDirection ? (
         <TrafficDirection trafficLightsDT={trafficLightsDT} />
+      ) : (
+        <DirectionInfo
+          onNavStartClick={handleNavStartClick}
+          pathResponse={pathResponse}
+        />
       )}
     </NavigationBarLayout>
   );
