@@ -78,6 +78,16 @@ const DirectionPage = () => {
   const pathResponse = pathDetailData?.data.data;
   console.log(pathResponse);
 
+  const trafficLightsDT = pathDetailData?.data.data.traffics.map((traffic) => ({
+    id: traffic.viewName,
+    redCycle: traffic.redCycle,
+    greenCycle: traffic.greenCycle,
+    color: traffic.color,
+    timeLeft: traffic.timeLeft,
+    direction: traffic.detail.direction,
+    // 여기에 서버에서 받아온 값 중 필요한 값 추가
+  }));
+
   const linePath = pathDetailData?.data.data.paths.map((path) => {
     return new kakao.maps.LatLng(path.lat, path.lng);
   });
@@ -193,8 +203,9 @@ const DirectionPage = () => {
         onNavStartClick={handleNavStartClick}
         pathResponse={pathResponse}
       />
-
-      {showTrafficDirection && <TrafficDirection />}
+      {showTrafficDirection && (
+        <TrafficDirection trafficLightsDT={trafficLightsDT} />
+      )}
     </NavigationBarLayout>
   );
 };

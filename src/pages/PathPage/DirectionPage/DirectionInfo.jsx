@@ -1,13 +1,9 @@
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
 import Walking from "../../../assets/icon/Walking.webp";
-import React, { useState, useEffect } from "react";
-import TrafficDirection from "./TrafficDirection.jsx";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { addressState } from "../../../recoil/addressState/atom";
 import { pathInfoState } from "../../../recoil/pathInfoState/atom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchPathDetail } from "../../../apis/api/paths";
 
 const Container = styled.div`
   background-color: white;
