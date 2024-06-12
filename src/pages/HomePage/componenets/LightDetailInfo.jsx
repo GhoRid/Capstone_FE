@@ -79,12 +79,12 @@ const Circle = styled.div`
   height: 20px;
   border-radius: 50%;
   background-color: ${({ color, theme }) =>
-    color === "green " ? theme.green : theme.red};
+    color === "GREEN" ? theme.green : theme.red};
 `;
 
 const RemainingTimeText = styled.span`
   font-weight: 700;
-  color: ${({ color, theme }) => (color === "green" ? theme.green : theme.red)};
+  color: ${({ color, theme }) => (color === "GREEN" ? theme.green : theme.red)};
 `;
 
 const LightDetailInfo = ({ isLoggein }) => {
