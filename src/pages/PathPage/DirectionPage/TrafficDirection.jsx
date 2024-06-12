@@ -166,12 +166,14 @@ const TrafficDirection = (trafficLightsDT) => {
   const pathInfo = useRecoilValue(pathInfoState);
   const [address, setAddress] = useRecoilState(addressState);
   const { startLat, startLng, endLat, endLng } = address;
-  const [trafficLights, setTrafficLights] = useState(trafficLightsDT);
+  const [trafficLights, setTrafficLights] = useState(
+    trafficLightsDT.trafficLightsDT
+  );
 
   // trafficLights가 변경될 때마다 trafficLights 상태를 업데이트
   useEffect(() => {
-    setTrafficLights(trafficLightsDT);
-  }, [trafficLightsDT]);
+    setTrafficLights(trafficLightsDT.trafficLightsDT);
+  }, [trafficLightsDT.trafficLightsDT]);
   //console.log("TrafficDirection 정보: " + trafficLights);
 
   return (
