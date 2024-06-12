@@ -183,7 +183,6 @@ const UserProfileUpdate = () => {
                 const formData = new FormData();
                 formData.append("files", uploadImg);
                 handleImgUpload(formData);
-                console.log("완료");
               }}
             >
               완료

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Layout from "../components/Layout";
 import SpinnerImg from "../assets/icon/Spinner.gif";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { addMember } from "../apis/api/members";
 import TimeOutModal from "../components/TimeOutModal";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import BaseModal from "./BaseModal";
 import { useLocation } from "react-router-dom";
@@ -83,7 +83,6 @@ const UpdateModal = ({ isOpen, onRequestClose, id }) => {
       window.location.reload();
     },
     onError: (err) => {
-      console.log(err);
       alert("수정에 실패했습니다.");
     },
   });
