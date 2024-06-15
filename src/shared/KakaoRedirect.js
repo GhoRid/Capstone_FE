@@ -35,7 +35,6 @@ const KakaoRedirect = () => {
   const [ishandleTimeOut, setIshandleTimeOut] = useState(false);
 
   const code = new URL(window.location.href).searchParams.get("code");
-  console.log(code);
 
   const { mutate } = useMutation({
     mutationFn: (code) => addMember(code),

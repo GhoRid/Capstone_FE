@@ -1,12 +1,13 @@
 import { motion, useDragControls } from "framer-motion";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import TrafficLight from "./TrafficLight";
+
 import { useQuery } from "@tanstack/react-query";
 import { fetchPathDetail } from "../../../apis/api/paths";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { pathInfoState } from "../../../recoil/pathInfoState/atom";
 import { addressState } from "../../../recoil/addressState/atom";
+import TrafficLight from "../../../components/TrafficLight";
 
 const Container = styled(motion.div)`
   //bottom: 0;
