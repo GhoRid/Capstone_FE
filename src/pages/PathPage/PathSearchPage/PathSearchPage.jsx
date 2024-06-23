@@ -84,7 +84,6 @@ const PathSearchPage = () => {
     errMsg: null,
     isLoading: true,
   });
-  const [result, setResult] = useState("");
   const [address, setAddress] = useState("");
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
@@ -170,12 +169,8 @@ const PathSearchPage = () => {
             map.getCenter().getLng()
           );
           geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
-          setResult(
-            `변경된 지도 중심좌표는 ${latlng.getLat()} 이고, 경도는 ${latlng.getLng()} 입니다`
-          );
           setLat(coord.getLat());
           setLng(coord.getLng());
-          console.log(result);
         }}
       >
         <CenterLocationIcon />
