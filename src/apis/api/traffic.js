@@ -17,7 +17,6 @@ export const fetchFavoriteTraffic = () => {
 };
 
 export const addFavoriteTraffic = (payload) => {
-  console.log(payload);
   return trafficInstance.post("/favorite", payload);
 };
 
@@ -30,7 +29,6 @@ export const deleteFavoriteTraffic = (trafficId) => {
 };
 
 export const updateFavoriteTraffic = ({ trafficId, alias }) => {
-  console.log(trafficId, alias);
   return trafficInstance.patch(`/favorite/${trafficId}`, {
     trafficAlias: alias,
   });

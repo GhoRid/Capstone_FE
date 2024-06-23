@@ -228,21 +228,6 @@ const SearchingBar = () => {
     }
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      if (isDepartureInputClicked) {
-        console.log("출발지: " + address.departureAddress);
-        console.log("isDepartureInputClicked: " + isDepartureInputClicked);
-        console.log("isArrivalInputClicked: " + isArrivalInputClicked);
-      }
-      if (isArrivalInputClicked) {
-        console.log("도착지: " + address.arrivalAddress);
-        console.log("isDepartureInputClicked: " + isDepartureInputClicked);
-        console.log("isArrivalInputClicked: " + isArrivalInputClicked);
-      }
-    }
-  };
-
   const { kakao } = window;
 
   var geocoder = new kakao.maps.services.Geocoder();
@@ -266,7 +251,6 @@ const SearchingBar = () => {
   };
 
   const handleCurrentLocationClick = () => {
-    console.log("현재 위치 클릭");
     var coord = new kakao.maps.LatLng(
       currentAddress.currentLat,
       currentAddress.currentLng
@@ -293,20 +277,11 @@ const SearchingBar = () => {
   const handleDirectionSearchClick = (event) => {
     setDirectionSearchClicked(true);
     event.stopPropagation();
-    // console.log("출발지 위도: " + address.startLat);
-    // console.log("출발지 경도: " + address.startLng);
-    // console.log("도착지 위도: " + address.endLat);
-    // console.log("도착지 경도: " + address.endLng);
 
     pathDetailRefetch(); // 출발지 및 도착지 위도 경도 전송
     navigate("/direction", {
       state: { isDirectionSearchClicked: isDirectionSearchClicked },
     });
-  };
-
-  const hanleAddtoFavoriteClick = () => {
-    console.log("즐겨찾기 클릭");
-    // addFavoritePathRefetch();
   };
 
   const {
@@ -322,8 +297,7 @@ const SearchingBar = () => {
       address.startLng !== null &&
       address.endLat !== null &&
       address.endLng !== null,
-    // keepPreviousData: true,
-    // staleTime: 5000,
+
     onError: (e) => {
       console.log(e);
     },
@@ -356,7 +330,6 @@ const SearchingBar = () => {
               placeholder="아래 버튼을 통해 현재 위치를 입력해주세요"
               value={address.departureAddress}
               onChange={handleInputChange}
-              onKeyDown={handleKeyPress}
               readOnly
             />
             <BackwardButton onClick={handleBackwardButtonClick} />
@@ -370,7 +343,6 @@ const SearchingBar = () => {
               placeholder="아래 버튼을 통해 현재 위치를 입력해주세요"
               value={address.arrivalAddress}
               onChange={handleInputChange}
-              onKeyDown={handleKeyPress}
               readOnly
             />
             <BackwardButton onClick={handleBackwardButtonClick} />
@@ -392,15 +364,10 @@ const SearchingBar = () => {
             <DirectionSearchButton
               disabled={!address.arrivalAddress || !address.departureAddress}
               onClick={handleDirectionSearchClick}
-              // style={{ display: isDirectionSearchClicked ? "none" : "block" }}
             >
               <Arrow />
               <DirectionSearchText>길찾기</DirectionSearchText>
             </DirectionSearchButton>
-            {/* <AddtoFavoriteButton
-              onClick={hanleAddtoFavoriteClick}
-              style={{ display: isDirectionSearchClicked ? "block" : "none" }}
-            ></AddtoFavoriteButton> */}
           </>
         ) : null}
         {isDepartureInputClicked ? (

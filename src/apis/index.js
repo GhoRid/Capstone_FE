@@ -79,7 +79,7 @@ memberInstance.interceptors.response.use(
 
 export const profileInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL + "/members/profile",
-  timeout: 2000,
+  timeout: 5000,
   headers: {
     "Content-Type": "multipart/form-data",
   },

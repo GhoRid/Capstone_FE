@@ -1,4 +1,4 @@
-import { memberInstance } from "..";
+import { memberInstance, profileInstance } from "..";
 
 export const fetchMemebers = (payload) => {
   return memberInstance.get("", payload);
@@ -15,4 +15,8 @@ export const deleteMember = () => {
 
 export const addMemberRefresh = (payload) => {
   return memberInstance.post("/token", payload);
+};
+
+export const updateProfileImage = (payload) => {
+  return profileInstance.patch("", payload);
 };

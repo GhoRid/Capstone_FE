@@ -5,8 +5,8 @@ import Header from "../../components/Header";
 import UpdateProfile from "../../assets/icon/updateProfile.webp";
 import { useRecoilValue } from "recoil";
 import { userInformationState } from "../../recoil/userInformationState/atom";
-import { updateProfileImage } from "../../apis/api/profile";
 import { useMutation } from "@tanstack/react-query";
+import { updateProfileImage } from "./../../apis/api/members";
 
 const Container = styled.div`
   width: 100%;
@@ -141,8 +141,21 @@ const UserProfileUpdate = () => {
     }
   };
 
-  const handleImgUpload = (imageData) => {
-    mutate(imageData);
+  const handleImgUpload = async (base64ImageData) => {
+    // Base64 문자열에서 데이터 파트만 추출
+    const base64Response = base64ImageData.split(";base64,").pop();
+
+    // Blob 객체로 변환
+    const imageBlob = await fetch(
+      `data:image/jpeg;base64,${base64Response}`
+    ).then((res) => res.blob());
+
+    const formData = new FormData();
+    // Blob 객체를 FormData에 추가
+    formData.append("profile", imageBlob, "profile.jpg"); // "profile.jpg"는 서버에서 요구하는 파일명에 따라 바꿔야 할 수도 있습니다.
+
+    // PATCH 요청 보내기
+    updateProfileImage(formData);
   };
 
   return (
@@ -180,9 +193,7 @@ const UserProfileUpdate = () => {
           <CommitBox>
             <CommitButton
               onClick={() => {
-                const formData = new FormData();
-                formData.append("files", uploadImg);
-                handleImgUpload(formData);
+                handleImgUpload(uploadImg);
               }}
             >
               완료
