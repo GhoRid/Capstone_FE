@@ -155,7 +155,7 @@ const UserProfileUpdate = () => {
     formData.append("profile", imageBlob, "profile.jpg"); // "profile.jpg"는 서버에서 요구하는 파일명에 따라 바꿔야 할 수도 있습니다.
 
     // PATCH 요청 보내기
-    updateProfileImage(formData);
+    mutate(formData);
   };
 
   return (
