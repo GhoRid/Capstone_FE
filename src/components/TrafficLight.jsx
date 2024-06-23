@@ -33,8 +33,8 @@ const Time = styled.span`
     props.state === "RED"
       ? "red"
       : props.state === "GREEN"
-        ? "green"
-        : "black"};
+      ? "green"
+      : "black"};
 `;
 
 const TrafficLight = ({
@@ -74,7 +74,7 @@ const TrafficLight = ({
       <Light color={state === "RED" ? "RED" : "#D9D9D9"} />
       <Light color={state === "GREEN" ? "GREEN" : "#D9D9D9"} />
       <Light color="#D9D9D9">
-        <Time state={state}>{time}</Time>
+        <Time state={state}>{time ? time : "X"}</Time>
       </Light>
     </TrafficLightContainer>
   );

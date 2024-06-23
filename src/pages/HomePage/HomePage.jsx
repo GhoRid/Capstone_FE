@@ -43,16 +43,27 @@ const Container = styled.div`
 
 const PanToButton = styled.button`
   position: absolute;
-  bottom: ${({ $openState, $navigationBarState }) =>
-    ($openState.detailInfoOpenState.openState === "closed" &&
-      $navigationBarState === "Home") ||
-    ($openState.surroundingLightInfoOpenState === "closed" &&
-      $navigationBarState === "TrafficSignal") ||
-    ($openState.favoritesInfoOpenState === "closed" &&
-      $navigationBarState === "Favorites") ||
-    $navigationBarState === "MyPage"
-      ? "4dvh"
-      : "42dvh"};
+  bottom: ${({ $openState, $navigationBarState }) => {
+    switch ($navigationBarState) {
+      case "Home":
+        return $openState.detailInfoOpenState.openState === "closed"
+          ? "2dvh"
+          : "8dvh";
+      case "TrafficSignal":
+        return $openState.surroundingLightInfoOpenState === "closed"
+          ? "4dvh"
+          : "42dvh";
+      case "Favorites":
+        return $openState.favoritesInfoOpenState === "closed"
+          ? "4dvh"
+          : "42dvh";
+      case "MyPage":
+        return "4dvh";
+      default:
+        return "42dvh";
+    }
+  }};
+
   right: 10px;
   border: none;
   border-radius: 50%;
@@ -194,7 +205,6 @@ const HomePage = () => {
           level={3}
           minLevel={4}
           onCreate={setMap}
-          // onCenterChanged
           onDragEnd={() => {
             handleMapDragEnd();
           }}
