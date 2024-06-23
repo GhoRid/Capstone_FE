@@ -112,7 +112,7 @@ const MoveBox = styled.div`
 const Move = styled.img``;
 
 const FavoritesTrafficItem = ({ traffic }) => {
-  const { detail, id, name } = traffic;
+  const { id, name } = traffic;
   const swipeDragControls = useDragControls();
   const [animateRef, animate] = useAnimate();
   const [currentDraggedItemId, setCurrentDraggedItemId] = useState(null);

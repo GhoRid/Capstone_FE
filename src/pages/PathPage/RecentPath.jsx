@@ -10,14 +10,12 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  //background-color: green;
-  //gap: 5px;
 `;
 
 const TitleBox = styled.div`
   display: flex;
   flex-direction: column;
-  //background-color: red;
+
   text-align: left;
   justify-content: center;
   font-size: 20px;
@@ -30,7 +28,6 @@ const TitleBox = styled.div`
 const RecentListBox = styled.div`
   display: flex;
   flex-direction: column;
-  //background-color: gray;
   padding: 0 10px;
   flex: 8.6364;
   overflow-y: auto;

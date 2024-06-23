@@ -1,17 +1,15 @@
 import styled from "styled-components";
 import crossIcon from "../../assets/icon/cross.webp";
 import backwardIcon from "../../assets/icon/backwardIcon.webp";
-import favoriteIcon from "../../assets/icon/favoriteIcon.webp";
-import favoriteIconFilled from "../../assets/icon/favoriteIconFilled.webp";
 import pinIcon from "../../assets/icon/pinIcon.webp";
 import pantoIcon from "../../assets/icon/pantoIcon.webp";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { ReactComponent as Arrow } from "../../assets/icon/arrow.svg";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { addressState } from "../../recoil/addressState/atom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPathDetail, addFavoritePath } from "../../apis/api/paths";
+import { fetchPathDetail } from "../../apis/api/paths";
 import { currentAddressState } from "../../recoil/currentAddressState/atom";
 
 const MainContainer = styled.div`
@@ -21,9 +19,8 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  //background-color: green;
+
   gap: 5px;
-  //border-bottom: 2px solid ${(props) => props.theme.gray};
 `;
 
 const InputBox1 = styled.div`
@@ -33,9 +30,6 @@ const InputBox1 = styled.div`
   align-items: center;
   color: ${(props) => props.theme.gray};
   height: 40px;
-  //background-color: blue;
-  //padding: 0 0px; // 상하 여백 0, 좌우 여백 10px
-  //flex: 9;
 `;
 const InputBox2 = styled.div`
   display: flex;
@@ -47,20 +41,15 @@ const InputBox2 = styled.div`
   font-weight: 600;
   height: 40px;
   gap: 10px;
-  //background-color: blue;
-  //padding: 0 0px; // 상하 여백 0, 좌우 여백 10px
-  //flex: 9;
 `;
 
 const InputButton = styled.button`
   background-color: #f0f0f0;
   border: none;
-  //padding: 15px;
   text-indent: 10px;
   height: 40px;
   margin-left: 20px;
-  //margin-top: 10px;
-  //margin-bottom: 10px;
+
   text-align: left;
   width: 80%;
   border-radius: 3px;
@@ -142,7 +131,6 @@ const DirectionSearchButton = styled.button`
   border-radius: 5px;
   background-color: ${(props) => props.theme.blue};
   display: block;
-  //box-shadow: 0px 4px 8px -1px rgba(0, 0, 0, 0.3);
 `;
 
 const DirectionSearchText = styled.p`
@@ -150,49 +138,15 @@ const DirectionSearchText = styled.p`
   color: white;
 `;
 
-const AddtoFavoriteButton = styled.button`
-  background-image: url(${favoriteIcon});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  border: none;
-  width: 33px;
-  height: 40px;
-  border-radius: 5px;
-  display: block;
-`;
-
-const AddtoFavoriteFilledButton = styled.button`
-  background-image: url(${favoriteIconFilled});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  border: none;
-  width: 33px;
-  height: 40px;
-  border-radius: 5px;
-  display: block;
-`;
-
 const SearchingBar = () => {
-  const token = localStorage.getItem("token");
   const [isDepartureInputClicked, setDepartureInputClicked] = useState(false);
   const [isArrivalInputClicked, setArrivalInputClicked] = useState(false);
   const [isDirectionSearchClicked, setDirectionSearchClicked] = useState(false);
   const navigate = useNavigate();
-  // const [departureInput, setDepartureInput] = useRecoilState(addressState);
-  // const [arrivalInput, setArrivalInput] = useRecoilState(addressState);
   const [address, setAddress] = useRecoilState(addressState);
-  // console.log(address);?
-  const [currentAddress, setCurrentAddress] =
-    useRecoilState(currentAddressState);
-  //console.log(!!departureAddress.departureAddress);
-  // const [arrivalAddress, setArrivalAddress] =
-  //   useRecoilState(arrivalAddressState);
+  const currentAddress = useRecoilValue(currentAddressState);
+
   const { startLat, startLng, endLat, endLng } = address;
-  const startName = address.departureAddress;
-  const endName = address.arrivalAddress;
-  const name = "test";
 
   const handleDepartureInputClick = () => {
     setDepartureInputClicked(true);
@@ -218,7 +172,6 @@ const SearchingBar = () => {
         ...prev,
         departureAddress: event.target.value,
       }));
-      //({ departureAddress: event.target.value });
     }
     if (isArrivalInputClicked) {
       setAddress((prev) => ({

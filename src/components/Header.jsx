@@ -33,7 +33,6 @@ const Title = styled.h2`
 `;
 
 const Header = ({ children }) => {
-  // 이전 페이지로 이동
   const navigate = useNavigate();
   const handlePreClick = () => {
     navigate(-1);

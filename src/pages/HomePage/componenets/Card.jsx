@@ -30,22 +30,6 @@ const AddressText = styled.span`
   left: 15%;
 `;
 
-const DetailAddressText = styled.span`
-  font-size: 12px;
-  position: absolute;
-  top: 42%;
-  left: 15%;
-  color: ${({ theme }) => theme.gray};
-`;
-
-const DistanceText = styled.span`
-  font-size: 14px;
-  position: absolute;
-  top: 20%;
-  left: 48%;
-  color: ${({ theme }) => theme.red};
-`;
-
 const IsFavoriteButton = styled.button`
   background: none;
   border: none;

@@ -66,7 +66,7 @@ const UpdateModal = ({ isOpen, onRequestClose, id }) => {
     onSuccess: () => {
       alert("수정되었습니다.");
       onRequestClose();
-      //리로드하여 데이터 refetch
+
       window.location.reload();
     },
     onError: (err) => {
@@ -79,7 +79,7 @@ const UpdateModal = ({ isOpen, onRequestClose, id }) => {
     onSuccess: () => {
       alert("수정되었습니다.");
       onRequestClose();
-      //리로드하여 데이터 refetch
+
       window.location.reload();
     },
     onError: (err) => {

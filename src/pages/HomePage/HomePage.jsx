@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Map, MapMarker, useMap } from "react-kakao-maps-sdk";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useQuery } from "@tanstack/react-query";
 import { styled } from "styled-components";
 import NavigationBarLayout from "../../components/NavigationBarLayout";

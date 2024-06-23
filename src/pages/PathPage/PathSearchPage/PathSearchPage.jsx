@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { Map } from "react-kakao-maps-sdk";
 import { useEffect, useState } from "react";
-import locationIcon from "../../../assets/icon/location.png";
 import centerLocationIcon from "../../../assets/icon/centerLocationIcon.webp";
 import PathTitle from "./PathTitle";
 import Address from "./Address";
@@ -95,10 +94,6 @@ const PathSearchPage = () => {
     map.panTo(newLatLng);
   };
 
-  // const handleBackwardButtonClick = (event) => {
-  //   event.stopPropagation();
-  // };
-
   var geocoder = new kakao.maps.services.Geocoder();
 
   var callback = function (result, status) {
@@ -162,7 +157,6 @@ const PathSearchPage = () => {
         center={state.center}
         style={{
           width: "100%",
-          //height: "calc(100vh - 80px)",
           height: "calc(100dvh - 205px)",
         }}
         padding={64}
@@ -184,19 +178,12 @@ const PathSearchPage = () => {
           console.log(result);
         }}
       >
-        {/* <MapMarker
-          position={state.center}
-          image={{ src: locationIcon, size: { width: 30, height: 30 } }}
-        /> Mapmarker 필요시 코드 사용*/}
         <CenterLocationIcon />
       </Map>
       <PanToButton
         onClick={() => {
           panTo();
-          // console.log(map.getBounds());
         }}
-        //$openState={openState}
-        //$navigationBarState={navigationBarState}
       >
         <svg
           width="20"
@@ -228,10 +215,7 @@ const PathSearchPage = () => {
       <PanToButton2
         onClick={() => {
           setCenter();
-          // console.log(map.getBounds());
         }}
-        //$openState={openState}
-        //$navigationBarState={navigationBarState}
       >
         <svg
           width="20"

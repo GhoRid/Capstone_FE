@@ -164,7 +164,7 @@ const UserPage = () => {
   const setUserInfo = useSetRecoilState(userInformationState);
   const setNavigationState = useSetRecoilState(navigationState);
 
-  const { isLoading, data, refetch } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["favorites"],
     queryFn: fetchMemebers,
     cacheTime: 0,

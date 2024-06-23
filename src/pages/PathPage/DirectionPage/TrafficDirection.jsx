@@ -1,16 +1,11 @@
 import { motion, useDragControls } from "framer-motion";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-
-import { useQuery } from "@tanstack/react-query";
-import { fetchPathDetail } from "../../../apis/api/paths";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { pathInfoState } from "../../../recoil/pathInfoState/atom";
-import { addressState } from "../../../recoil/addressState/atom";
 import TrafficLight from "../../../components/TrafficLight";
 
 const Container = styled(motion.div)`
-  //bottom: 0;
   width: 100%;
   height: 100dvh;
   background-color: white;
@@ -26,13 +21,13 @@ const Box1 = styled.div`
   position: absolute;
   flex-direction: column;
   justify-content: center;
-  //align-items: center;
+
   width: 100%;
   height: 15%;
   margin-top: 16px;
   left: 0;
   gap: 10px;
-  //background-color: red;
+
   border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
 
@@ -42,15 +37,14 @@ const Box2 = styled.div`
   position: absolute;
   flex-direction: column;
   justify-content: center;
-  //align-items: center;
+
   width: 100%;
   height: 7%;
-  //margin-top: 35%;
+
   top: calc(15% + 15px);
   left: 0;
   font-weight: 600;
-  //gap: 10px;
-  //background-color: blue;
+
   border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
 
@@ -59,17 +53,13 @@ const Box3 = styled.div`
   display: flex;
   position: absolute;
   flex-direction: column;
-  //justify-content: center;
-  //align-items: center;
+
   width: 100%;
   height: 45%;
   margin-top: 10px;
   top: calc(22% + 14px);
   left: 0;
   font-weight: 600;
-  //gap: 10px;
-  //background-color: green;
-  //border-bottom: 1px solid ${(props) => props.theme.gray};
 `;
 
 const HeaderBox = styled.div`
@@ -109,7 +99,7 @@ const InfoBox = styled.div`
 const TrafficLightsListBox = styled.div`
   display: flex;
   flex-direction: column;
-  //background-color: gray;
+
   padding: 0 10px;
   overflow-y: auto;
 `;
@@ -121,12 +111,9 @@ const TrafficLightsItem = styled.div`
   line-height: 50px;
   text-indent: 0;
   color: ${(props) => props.theme.blue};
-  //border-bottom: 2px solid ${(props) => props.theme.gray};
 `;
 
-const TrafficLightContainer = styled.div`
-  //margin-left: auto;
-`;
+const TrafficLightContainer = styled.div``;
 
 const NumberingIcon = styled.div`
   display: flex;
@@ -143,7 +130,7 @@ const NumberingIcon = styled.div`
 
 const NoTrafficLights = styled.div`
   height: 125px;
-  //background-color: green;
+
   display: flex;
   color: ${(props) => props.theme.gray};
   flex-direction: column;
@@ -154,19 +141,14 @@ const NoTrafficLights = styled.div`
 `;
 
 const Direction = styled.div`
-  //background-color: green;
-  //margin-right: auto;
   margin-left: auto;
   color: black;
-  // align-items: center;
 `;
 
 const TrafficDirection = (trafficLightsDT) => {
   const dragControls = useDragControls();
   const [openState, setOpenState] = useState("mid");
   const pathInfo = useRecoilValue(pathInfoState);
-  const [address, setAddress] = useRecoilState(addressState);
-  const { startLat, startLng, endLat, endLng } = address;
   const [trafficLights, setTrafficLights] = useState(
     trafficLightsDT.trafficLightsDT
   );
@@ -175,7 +157,6 @@ const TrafficDirection = (trafficLightsDT) => {
   useEffect(() => {
     setTrafficLights(trafficLightsDT.trafficLightsDT);
   }, [trafficLightsDT.trafficLightsDT]);
-  //console.log("TrafficDirection 정보: " + trafficLights);
 
   return (
     <Container

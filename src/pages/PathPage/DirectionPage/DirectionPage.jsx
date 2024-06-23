@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useEffect, useState } from "react";
-import locationIcon from "../../../assets/icon/location.png";
 import startingPoint from "../../../assets/icon/startingPoint.webp";
 import endingPoint from "../../../assets/icon/endingPoint.webp";
 import NavigationBarLayout from "../../../components/NavigationBarLayout";

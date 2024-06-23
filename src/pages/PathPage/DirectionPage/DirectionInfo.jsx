@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 import Walking from "../../../assets/icon/Walking.webp";
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { addressState } from "../../../recoil/addressState/atom";
 import { pathInfoState } from "../../../recoil/pathInfoState/atom";
 
 const Container = styled.div`
@@ -32,7 +31,6 @@ const Box1 = styled.div`
   width: 50%;
   height: 75%;
   gap: 10px;
-  //background-color: red;
 `;
 
 const StartTimeBox = styled.div`
@@ -62,7 +60,7 @@ const NavStartButton = styled.button`
   width: 100%;
   align-items: center;
   height: 25%;
-  // line-height: 50px;
+
   justify-content: center;
   color: white;
   font-weight: 700;
@@ -81,18 +79,16 @@ const WalkingIcon = styled.img.attrs({
 `;
 
 const DirecrtionInfo = ({ onNavStartClick, pathResponse }) => {
-  const [address, setAddress] = useRecoilState(addressState);
   const [pathInfo, setPathInfo] = useRecoilState(pathInfoState);
 
   const getSuggestedTime = () => {
     let currentTime = new Date();
 
-    const timeLeftInSeconds = Math.round(pathResponse.timeToFirstTraffic); // -30 // -(n초)를 하면, 신호가 바뀌기 n초 전에 도착하도록 추천 출발 시간 설정 가능
+    const timeLeftInSeconds = Math.round(pathResponse?.timeToFirstTraffic); // -30 // -(n초)를 하면, 신호가 바뀌기 n초 전에 도착하도록 추천 출발 시간 설정 가능
     currentTime = new Date(currentTime.getTime() + timeLeftInSeconds * 1000);
 
     let hours = currentTime.getHours();
     const minutes = currentTime.getMinutes();
-    // const seconds = currentTime.getSeconds();
     const ampm = hours >= 12 ? "오후" : "오전";
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'

@@ -64,7 +64,6 @@ const DeleteModal = ({ isOpen, onRequestClose, id }) => {
     onSuccess: () => {
       alert("삭제되었습니다.");
       onRequestClose();
-      //리로드하여 데이터 refetch
       window.location.reload();
     },
     onError: (err) => {
@@ -77,7 +76,7 @@ const DeleteModal = ({ isOpen, onRequestClose, id }) => {
     onSuccess: () => {
       alert("삭제되었습니다.");
       onRequestClose();
-      //리로드하여 데이터 refetch
+
       window.location.reload();
     },
     onError: (err) => {
